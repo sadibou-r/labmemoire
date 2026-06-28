@@ -17,10 +17,24 @@
   }
   @else {
     @if (!(annotationsList.length == 0)) {
+      <div class="correction_header">
+        <p class="paginate">Correction — page <strong>{{correctionPage}} / {{totalCorrectionPages}}</strong>
+          <span class="range">({{correctionRangeStart}}–{{correctionRangeEnd}} sur {{annotationsList.length}})</span>
+        </p>
+        <div class="pager">
+          <button type="button" class="pager_btn" (click)="prevCorrectionPage()" [disabled]="correctionPage === 1">← Précédent</button>
+          <button type="button" class="pager_btn" (click)="nextCorrectionPage()" [disabled]="correctionPage === totalCorrectionPages">Suivant →</button>
+        </div>
+      </div>
       <div class="grid">
-        @for (annotation of annotationsList; track $index) {
+        @for (annotation of pagedAnnotations; track annotation.id) {
           <app-card  [id]="annotation.id" [imageUrl]="annotation.image.path" [medecinName] = "annotation.user.name" [grade]="annotation.grade" [stade]="annotation.stade"></app-card>
         }
+      </div>
+      <div class="pager bottom">
+        <button type="button" class="pager_btn" (click)="prevCorrectionPage()" [disabled]="correctionPage === 1">← Précédent</button>
+        <span class="pager_info">Page {{correctionPage}} / {{totalCorrectionPages}}</span>
+        <button type="button" class="pager_btn" (click)="nextCorrectionPage()" [disabled]="correctionPage === totalCorrectionPages">Suivant →</button>
       </div>
     }
     @else {

@@ -28,6 +28,9 @@ export class HomeComponent {
   current_batch : any = 1
   total_batches : any = 1
   isSubmitting = false;
+  // Pagination de l'onglet "Annotations" (correction).
+  correctionPageSize = 12;
+  correctionPage = 1;
   constructor(
     private router : Router,
     private authService : AuthService,
@@ -111,10 +114,41 @@ export class HomeComponent {
               )
             )
           }
-        )}
+        )
+        // Reprendre à la dernière page consultée par ce médecin.
+        const saved = Number(localStorage.getItem(this.correctionStorageKey));
+        if (saved) {
+          this.correctionPage = Math.min(Math.max(1, saved), this.totalCorrectionPages);
+        }
+      }
       }
     )
   }
+
+  get correctionStorageKey(): string {
+    return `correctionPage_${this.sessionService.getUser()?.id ?? 'anon'}`;
+  }
+  get totalCorrectionPages(): number {
+    return Math.max(1, Math.ceil(this.annotationsList.length / this.correctionPageSize));
+  }
+  get pagedAnnotations(): AnnotationDTO[] {
+    const start = (this.correctionPage - 1) * this.correctionPageSize;
+    return this.annotationsList.slice(start, start + this.correctionPageSize);
+  }
+  get correctionRangeStart(): number {
+    return this.annotationsList.length === 0 ? 0 : (this.correctionPage - 1) * this.correctionPageSize + 1;
+  }
+  get correctionRangeEnd(): number {
+    return Math.min(this.correctionPage * this.correctionPageSize, this.annotationsList.length);
+  }
+  setCorrectionPage(p: number) {
+    this.correctionPage = Math.min(Math.max(1, p), this.totalCorrectionPages);
+    localStorage.setItem(this.correctionStorageKey, String(this.correctionPage));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  nextCorrectionPage() { this.setCorrectionPage(this.correctionPage + 1); }
+  prevCorrectionPage() { this.setCorrectionPage(this.correctionPage - 1); }
+
 get itemsArray(): FormArray {
   return this.form.get('items') as FormArray;
 }
