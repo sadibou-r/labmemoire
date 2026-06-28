@@ -5,11 +5,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://REMPLACER-PAR-URL-RENDER.onrender.com/api/:path*"
+      "destination": "https://ulcervision.onrender.com/api/:path*"
     },
     {
       "source": "/storage/:path*",
-      "destination": "https://REMPLACER-PAR-URL-RENDER.onrender.com/storage/:path*"
+      "destination": "https://ulcervision.onrender.com/storage/:path*"
     },
     {
       "source": "/((?!.*\\.).*)",
