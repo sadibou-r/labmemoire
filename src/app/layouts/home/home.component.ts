@@ -115,11 +115,7 @@ export class HomeComponent {
             )
           }
         )
-        // Reprendre à la dernière page consultée par ce médecin.
-        const saved = Number(localStorage.getItem(this.correctionStorageKey));
-        if (saved) {
-          this.correctionPage = Math.min(Math.max(1, saved), this.totalCorrectionPages);
-        }
+        this.applyResume();
       }
       }
     )
@@ -127,6 +123,29 @@ export class HomeComponent {
 
   get correctionStorageKey(): string {
     return `correctionPage_${this.sessionService.getUser()?.id ?? 'anon'}`;
+  }
+  // Au chargement : ouvrir l'onglet Annotations sur la page de la dernière image
+  // corrigée (mémorisée côté serveur). À défaut, reprendre la dernière page vue (local).
+  private applyResume() {
+    const fallbackToLocal = () => {
+      const saved = Number(localStorage.getItem(this.correctionStorageKey));
+      if (saved) {
+        this.correctionPage = Math.min(Math.max(1, saved), this.totalCorrectionPages);
+      }
+    };
+    this.annotationService.getResume().subscribe({
+      next: (res: any) => {
+        const id = res?.annotation_id;
+        const idx = id ? this.annotationsList.findIndex(a => a.id === id) : -1;
+        if (idx >= 0) {
+          this.annoter = false; // basculer sur l'onglet "Annotations"
+          this.correctionPage = Math.floor(idx / this.correctionPageSize) + 1;
+        } else {
+          fallbackToLocal();
+        }
+      },
+      error: () => fallbackToLocal()
+    });
   }
   get totalCorrectionPages(): number {
     return Math.max(1, Math.ceil(this.annotationsList.length / this.correctionPageSize));

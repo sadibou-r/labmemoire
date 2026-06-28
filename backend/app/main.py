@@ -172,9 +172,17 @@ def update_annotation(
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Annotation introuvable")
     annotation.grade = payload.grade
     annotation.stade = payload.stade
+    # Mémorise la dernière correction de ce médecin pour reprendre au login.
+    user.last_corrected_annotation_id = annotation.id
     db.commit()
     db.refresh(annotation)
     return annotation
+
+
+@app.get("/api/me/resume")
+def resume(user: User = Depends(get_current_user)):
+    """Dernière annotation corrigée par l'utilisateur (pour reprise côté frontend)."""
+    return {"annotation_id": user.last_corrected_annotation_id}
 
 
 # ---------------------------------------------------------------------------

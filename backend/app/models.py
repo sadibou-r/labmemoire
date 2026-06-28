@@ -23,6 +23,8 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(String, nullable=False)
     # Colonne historique (plus utilisée — les jetons vivent dans la table tokens).
     token: Mapped[str | None] = mapped_column(String, nullable=True, index=True)
+    # Dernière annotation corrigée par cet utilisateur (reprise au login).
+    last_corrected_annotation_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     annotations = relationship("Annotation", back_populates="user")
     tokens = relationship("Token", back_populates="user", cascade="all, delete-orphan")

@@ -36,6 +36,14 @@ export class AnnotationService {
       { headers }
     );
   }
+  getResume() : Observable<any>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.sessionService.getUser()?.token}`,
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
+    });
+    return this.httpClient.get(`${appContants.baseUrl}/me/resume`, { headers });
+  }
   updateAnnotation(id : number, grade : string, stade : string) : Observable<any>{
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.sessionService.getUser()?.token}`,
