@@ -21,10 +21,23 @@ class User(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String, nullable=False)
-    # Jeton d'API courant (Bearer). Un seul jeton actif par utilisateur suffit ici.
+    # Colonne historique (plus utilisée — les jetons vivent dans la table tokens).
     token: Mapped[str | None] = mapped_column(String, nullable=True, index=True)
 
     annotations = relationship("Annotation", back_populates="user")
+    tokens = relationship("Token", back_populates="user", cascade="all, delete-orphan")
+
+
+class Token(Base):
+    """Jeton d'API Bearer. Plusieurs jetons actifs par utilisateur (multi-sessions)."""
+    __tablename__ = "tokens"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    value: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="tokens")
 
 
 class Image(Base):

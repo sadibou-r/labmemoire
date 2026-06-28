@@ -3,7 +3,7 @@ from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
 from .database import get_db
-from .models import User
+from .models import Token, User
 
 
 def get_current_user(
@@ -12,8 +12,8 @@ def get_current_user(
 ) -> User:
     if not authorization or not authorization.lower().startswith("bearer "):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Jeton manquant")
-    token = authorization.split(" ", 1)[1].strip()
-    user = db.query(User).filter(User.token == token).first()
-    if not user:
+    value = authorization.split(" ", 1)[1].strip()
+    token = db.query(Token).filter(Token.value == value).first()
+    if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Jeton invalide")
-    return user
+    return token.user

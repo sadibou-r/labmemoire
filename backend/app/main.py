@@ -6,7 +6,7 @@ préfixe /api, jetons Bearer, fichiers statiques servis sous /storage.
 import math
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from .database import Base, engine, get_db
 from .deps import get_current_user
-from .models import Annotation, Image, User
+from .models import Annotation, Image, Token, User
 from .schemas import (
     AnnotationOut,
     AnnotationUpdateIn,
@@ -65,16 +65,20 @@ def login(payload: LoginIn, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == payload.email).first()
     if not user or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Identifiants invalides")
-    user.token = generate_token()
+    # Un nouveau jeton par connexion : les sessions existantes restent valides.
+    token = Token(value=generate_token(), user_id=user.id)
+    db.add(token)
     db.commit()
-    db.refresh(user)
-    return {"token": user.token, "user": user}
+    return {"token": token.value, "user": user}
 
 
 @app.post("/api/logout")
-def logout(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    user.token = None
-    db.commit()
+def logout(authorization: str | None = Header(default=None), db: Session = Depends(get_db)):
+    # Supprime uniquement le jeton de cette session.
+    if authorization and authorization.lower().startswith("bearer "):
+        value = authorization.split(" ", 1)[1].strip()
+        db.query(Token).filter(Token.value == value).delete()
+        db.commit()
     return {"message": "Déconnecté"}
 
 
