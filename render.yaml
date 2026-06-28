@@ -1,0 +1,13 @@
+# Blueprint Render — ULCERVISION (API + frontend + images, un seul service Docker)
+# La base Postgres persistante est fournie par Supabase via DATABASE_URL (secret).
+services:
+  - type: web
+    name: ulcervision
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: frankfurt          # le plus proche du Sénégal sur Render
+    healthCheckPath: /api
+    envVars:
+      - key: DATABASE_URL       # à renseigner dans le dashboard Render (URI Supabase)
+        sync: false

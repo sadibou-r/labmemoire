@@ -1,0 +1,38 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="home_container">
+  <div class="navbar">
+    <img class="logo" src="logo.svg" alt="">
+    <div class="actions_container">
+      <span [ngClass]="{ 'action': true, 'active': annoter }" (click)="goAnnoter()">Annoter</span>
+      <span [ngClass]="{ 'action': true, 'active': !annoter }" (click)="goAnnotation()">Annotations</span>
+    </div>
+    <span class="logout" (click)="logout()">Se déconnecter</span>
+  </div>
+  @if (annoter) {
+      <p class="paginate">Page <strong>{{current_batch}} / {{total_batches}}</strong></p>
+      <div formArrayName="items" class="grid">
+        @for (item of itemsControls; track $index) {
+          <app-card-input [group]="item" [imageId]="imagesBatch[$index].id" [imageUrl]="imagesBatch[$index].path"></app-card-input>
+        }
+      </div>
+  }
+  @else {
+    @if (!(annotationsList.length == 0)) {
+      <div class="grid">
+        @for (annotation of annotationsList; track $index) {
+          <app-card  [id]="annotation.id" [imageUrl]="annotation.image.path" [medecinName] = "annotation.user.name" [grade]="annotation.grade" [stade]="annotation.stade"></app-card>
+        }
+      </div>
+    }
+    @else {
+      <p class="centered">Aucun pied n'a été annoté pour le moment</p>
+    }
+  }
+    @if (has_error) {
+      <span class="err_message">Au moins une annotation a été oubliée</span>
+    }
+  <div class="submit_container">
+    @if (annoter) {
+      <input type="submit" value="Valider" [disabled]="isSubmitting">
+    }
+  </div>
+</form>

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+app.db
+.venv/
+venv/
+frontend_dist/
+
+# storage/images est versionné (nécessaire au build Render) ; pas la base ni les frontières
+storage/*.db

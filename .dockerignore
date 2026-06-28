@@ -1,0 +1,21 @@
+# Frontend
+node_modules
+.angular
+dist
+
+# Python
+**/__pycache__
+*.pyc
+backend/.venv
+backend/venv
+
+# Base locale (recréée sur le volume en prod) — NE PAS embarquer
+backend/app.db
+
+# Données volumineuses inutiles au runtime (images déjà dans backend/storage/images)
+Données/Images
+
+# Divers
+.git
+.vscode
+*.log

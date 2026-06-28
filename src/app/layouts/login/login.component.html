@@ -1,0 +1,14 @@
+<img class="bg_image" src="objects.svg" alt="">
+<div class="form_wrapper">
+  <form *ngIf="formulaire" [formGroup]="formulaire" (ngSubmit)="loginUser()">
+    <img class="logo" src="logo.svg" alt="">
+    <input formControlName = "username" type="text" id="username" placeholder="Nom d'utilisateur" autocomplete="off">
+    <input formControlName = "password" type="password" id="password" placeholder="Mot de passe">
+    <input type="submit" id="submit" value="Se connecter" >
+    @if (badLogin) {
+      <div class="alert">
+        Identifiants incorrect
+      </div>
+    }
+  </form>
+</div>

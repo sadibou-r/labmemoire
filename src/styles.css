@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+/* src: url('/public/Nexa/NexaLight.otf'); */
+@font-face {
+  font-family: 'NexaLight';
+  src: url('/fonts/Nexa-ExtraLight.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NexaBold';
+  src: url('/fonts/Nexa-Heavy.ttf') format('truetype');
+  /* src: url('/public/fonts/Nexa/NexaBold.otf'); */
+  font-weight: normal;
+  font-style: normal;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'NexaLight', sans-serif;
+  letter-spacing: 1px;
+  color: #1b1b1b;
+}

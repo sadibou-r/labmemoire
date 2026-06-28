@@ -1,0 +1,124 @@
+.card{
+  width: 100%;        /* prend toute la largeur de la colonne */
+  min-width: 350px;
+  height: 450px;
+  background: white;
+  margin: auto;
+  display: flex;
+  padding: 8px;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04),
+              0 2px 4px rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+.image_container{
+  width: 100%;
+  height: 385px;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.see_container{
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: #181818;
+  z-index: 1;
+  margin: 8px;
+  cursor: pointer;
+}
+.see_container img{
+  width: 24px;
+}
+.pied_image{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.details{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+}
+.fg{
+  display: flex;
+  flex-direction: column;
+}
+.radio-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+.radio-con{
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+.signification{
+  font-size: 10px;
+  text-align: center;
+}
+.lab{
+  margin: 0;
+  font-size: 18px;
+}
+.radio{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  height: fit-content;
+}
+
+.radio label{
+  align-self: flex-end;
+  font-size: 14px;
+}
+.details input{
+  width: 47%;
+  height: 40px;
+  padding-left: 8px;
+  outline: none;
+  border: none;
+  background-color: rgb(245,245,245);
+  border-radius: 8px;
+  color: #181818;
+}
+.phone-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  width : 100%;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+}
+/*
+.phone-image {
+  max-height: 90vh;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+  border-radius: 12px;
+}
+*/
+.modal-content{
+  position: relative !important;
+}
+@media screen and (max-width : 500px) {
+  .signification{
+    margin-right: 10px;
+  }
+}

@@ -1,0 +1,65 @@
+<div class="card">
+  <div class="image_container">
+    <img [src]="storageUrl + imageUrl" alt="" class="pied_image">
+    <div class="see_container">
+      <img data-toggle="modal" [attr.data-target]="'#pic' + id" src="voir.png" alt="">
+    </div>
+  </div>
+  <div class="infos_container">
+    @if (!editing) {
+      <div class="one_line">
+        <span class="title">Grade: </span>
+        <span class="content"> {{grade}} </span>
+      </div>
+      <div class="one_line">
+        <span class="title">Classe: </span>
+        <span class="content"> {{stade}} </span>
+      </div>
+      <button type="button" class="edit_btn" (click)="startEdit()">Corriger</button>
+    }
+    @else {
+      <div class="one_line">
+        <span class="title">Grade: </span>
+        <div class="edit_choices">
+          @for (g of grades; track g) {
+            <label class="choice" [class.selected]="editGrade === g">
+              <input type="radio" name="grade{{id}}" [value]="g" [(ngModel)]="editGrade"> {{g}}
+            </label>
+          }
+        </div>
+      </div>
+      <div class="one_line">
+        <span class="title">Classe: </span>
+        <div class="edit_choices">
+          @for (s of stades; track s) {
+            <label class="choice" [class.selected]="editStade === s">
+              <input type="radio" name="stade{{id}}" [value]="s" [(ngModel)]="editStade"> {{s}}
+            </label>
+          }
+        </div>
+      </div>
+      @if (saveError) {
+        <span class="edit_error">Échec de l'enregistrement</span>
+      }
+      <div class="edit_actions">
+        <button type="button" class="save_btn" (click)="saveEdit()" [disabled]="saving">Enregistrer</button>
+        <button type="button" class="cancel_btn" (click)="cancelEdit()" [disabled]="saving">Annuler</button>
+      </div>
+    }
+  </div>
+</div>
+<div class="modal fade" [id]="'pic' + id" tabindex="-1" aria-labelledby="updatemodal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content custom-modal-bg ">
+      <div class="modal-header border-0 w-100">
+        <button type="button" class="close ms-auto" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex justify-content-center align-items-center p-0">
+        <img [src]="storageUrl + imageUrl" class="img-fluid phone-image" alt="Image" />
+      </div>
+    </div>
+  </div>
+</div>
+

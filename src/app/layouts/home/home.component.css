@@ -1,0 +1,88 @@
+.home_container{
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.logo{
+  width: 48px;
+}
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.actions_container{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  cursor: pointer;
+}
+.action.active{
+  background-color: #181818;
+  padding: 5px 15px;
+  border-radius: 50px;
+  color: white;
+}
+.logout{
+  padding: 5px 15px;
+  border-radius: 50px;
+  color: #181818;
+  border: 2px solid black ;
+  font-family: NexaBold;
+  cursor: pointer;
+}
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+.submit_container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.submit_container input{
+  background-color: #181818;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 5px;
+  outline: none;
+}
+.centered{
+  margin-top: 40vh;
+  text-align: center;
+  font-size: 36px;
+}
+.paginate{
+  font-size: 18px;
+  margin-top: 20px;
+}
+.err_message{
+  margin-top: 20px;
+  color: red;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+@media screen and (max-width:630px) {
+  .home_container{
+    width: 90%;
+  }
+  .navbar{
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  .actions_container{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .centered{
+  margin-top: 30vh;
+    font-size: 24px;
+  }
+}

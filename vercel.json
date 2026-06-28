@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/cslabmemoire/browser",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://REMPLACER-PAR-URL-RENDER.onrender.com/api/:path*"
+    },
+    {
+      "source": "/storage/:path*",
+      "destination": "https://REMPLACER-PAR-URL-RENDER.onrender.com/storage/:path*"
+    },
+    {
+      "source": "/((?!.*\\.).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

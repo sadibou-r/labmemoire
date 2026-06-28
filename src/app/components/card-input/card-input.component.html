@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="image_container">
+    <img [src]="storageUrl + imageUrl" alt="" class="pied_image">
+    <div class="see_container">
+      <img data-toggle="modal" [attr.data-target]="'#pic' + imageId" src="voir.png" alt="">
+    </div>
+  </div>
+  <div [formGroup]="group" class="details">
+<!-- Radios pour Grade -->
+    <div class="fg">
+      <label class="lab">Grade :</label>
+      <div class="radio-row">
+        @for (g of grades_array; track $index) {
+          <div class="radio-con">
+            <div class="radio">
+              <input type="radio" [value]="g.gr" formControlName="grade" [id]="'grade' + imageId + g.gr">
+              <label [for]="'grade' + imageId + g.gr">{{ g.gr }}</label>
+            </div>
+            <span class="signification"> {{g.sig}} </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Radios pour Stade -->
+    <div class="fg">
+      <label class="lab">Classe :</label>
+      <div class="radio-row">
+        @for (s of stades_array; track $index) {
+          <div class="radio-con">
+            <div class="radio">
+              <input type="radio" [value]="s" formControlName="stade" [id]="'stade' + imageId + s.st">
+              <label [for]="'stade' + imageId + s.st">{{ s.st }}</label>
+            </div>
+            <span class="signification"> {{s.sig}} </span>
+          </div>
+        }
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" [id]="'pic' + imageId" tabindex="-1" aria-labelledby="updatemodal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content custom-modal-bg ">
+      <div class="modal-header border-0 w-100">
+        <button type="button" class="close ms-auto" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex justify-content-center align-items-center p-0">
+        <img [src]="storageUrl + imageUrl" class="img-fluid phone-image" alt="Image" />
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Données : seul annotations.csv est utile (images redondantes avec backend/storage)
+/Données/Images

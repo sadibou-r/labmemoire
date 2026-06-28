@@ -1,0 +1,153 @@
+.card{
+  width: 100%;        /* prend toute la largeur de la colonne */
+  min-width: 350px;
+  height: 500px;
+  background: white;
+  margin: auto;
+  display: flex;
+  padding: 8px;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04),
+              0 2px 4px rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+.image_container{
+  width: 100%;
+  height: 385px;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.see_container{
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background-color: #181818;
+  z-index: 1;
+  margin: 8px;
+  cursor: pointer;
+}
+.see_container img{
+  width: 24px;
+}
+.pied_image{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.details{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.details input{
+  width: 47%;
+  height: 40px;
+  padding-left: 8px;
+  outline: none;
+  border: none;
+  background-color: rgb(245,245,245);
+  border-radius: 8px;
+  color: #181818;
+}
+.phone-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  width : 100%;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+}
+/*
+.phone-image {
+  max-height: 90vh;
+  aspect-ratio: 9/16;
+  object-fit: cover;
+  border-radius: 12px;
+}
+*/
+.modal-content{
+  position: relative !important;
+}
+
+.infos_container{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 6px 6px;
+}
+.one_line{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.edit_choices{
+  display: flex;
+  gap: 6px;
+}
+.choice{
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: rgb(245,245,245);
+  cursor: pointer;
+}
+.choice.selected{
+  background-color: #181818;
+  color: white;
+}
+.choice input{
+  display: none;
+}
+.edit_btn, .save_btn, .cancel_btn{
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.edit_btn{
+  align-self: flex-start;
+  background-color: #181818;
+  color: white;
+}
+.edit_actions{
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+.save_btn{
+  background-color: #181818;
+  color: white;
+}
+.cancel_btn{
+  background-color: rgb(235,235,235);
+  color: #181818;
+}
+.save_btn:disabled, .cancel_btn:disabled{
+  opacity: .6;
+  cursor: default;
+}
+.edit_error{
+  color: #DC2626;
+  font-size: .85rem;
+  font-weight: 600;
+}
+
