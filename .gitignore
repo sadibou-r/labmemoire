@@ -43,3 +43,6 @@ Thumbs.db
 
 # Données : seul annotations.csv est utile (images redondantes avec backend/storage)
 /Données/Images
+# Mapping IDs neutres -> noms de patients d'origine : NE JAMAIS versionner (PII)
+/Données/mapping_nouvelles_images.csv
+/backend/Données/mapping_nouvelles_images.csv
