@@ -21,6 +21,7 @@ from .schemas import (
     BatchAnnotationsIn,
     BatchAnnotationsOut,
     BatchImagesOut,
+    ImageOut,
     LoginIn,
     LoginOut,
     UndefinedImagesOut,
@@ -91,12 +92,12 @@ def next_batch(user: User = Depends(get_current_user), db: Session = Depends(get
     annotated_ids = [
         a.image_id for a in db.query(Annotation.image_id).filter(Annotation.user_id == user.id)
     ]
-    query = db.query(Image)
+    query = db.query(Image).filter(Image.is_rejected == False)  # noqa: E712
     if annotated_ids:
         query = query.filter(~Image.id.in_(annotated_ids))
     images = query.order_by(Image.id).limit(BATCH_SIZE).all()
 
-    total_images = db.query(Image).count()
+    total_images = db.query(Image).filter(Image.is_rejected == False).count()  # noqa: E712
     done = len(annotated_ids)
     total_batches = max(1, math.ceil(total_images / BATCH_SIZE))
     current_batch = min(total_batches, done // BATCH_SIZE + 1)
@@ -106,8 +107,33 @@ def next_batch(user: User = Depends(get_current_user), db: Session = Depends(get
 @app.get("/api/images/undefined-batch", response_model=UndefinedImagesOut)
 def undefined_batch(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Images sans aucune annotation (utilisé par le compte validateur)."""
-    images = db.query(Image).filter(Image.is_annotated == False).order_by(Image.id).all()  # noqa: E712
+    images = (
+        db.query(Image)
+        .filter(Image.is_annotated == False, Image.is_rejected == False)  # noqa: E712
+        .order_by(Image.id)
+        .all()
+    )
     return {"images": images}
+
+
+@app.post("/api/images/{image_id}/reject", response_model=ImageOut)
+def reject_image(
+    image_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Écarte une image jugée inexploitable (doublon, pas un pied diabétique...).
+
+    Marquage réversible : la ligne reste en base, l'image sort simplement des lots.
+    Repasser is_rejected à false en base suffit à la remettre en circulation.
+    """
+    image = db.get(Image, image_id)
+    if not image:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Image introuvable")
+    image.is_rejected = True
+    db.commit()
+    db.refresh(image)
+    return image
 
 
 # ---------------------------------------------------------------------------

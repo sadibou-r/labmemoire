@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { appContants } from '../../constants';
 @Component({
@@ -12,7 +12,15 @@ export class CardInputComponent {
   @Input() imageId : number = 0
   @Input() imageUrl : string = ''
   @Input() group!: FormGroup;
+  // Le parent gère le retrait : lui seul peut garder imagesBatch et le FormArray alignés.
+  @Output() remove = new EventEmitter<number>()
   storageUrl : string = appContants.storageUrl
+
+  askRemove(){
+    if (confirm("Écarter cette image ? Elle ne sera plus proposée à l'annotation.")) {
+      this.remove.emit(this.imageId)
+    }
+  }
   grades_array : any = [
     {
       gr : 0,

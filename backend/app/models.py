@@ -8,6 +8,7 @@ from sqlalchemy import (
     Integer,
     String,
     UniqueConstraint,
+    false,
 )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
@@ -49,6 +50,12 @@ class Image(Base):
     # Chemin relatif servi par /storage/, ex: "images/Pied001.jpg"
     path: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     is_annotated: Mapped[bool] = mapped_column(Boolean, default=False)
+    # Écartée par le médecin (doublon, pas un pied diabétique...) : sort des lots à
+    # annoter mais reste en base, donc réversible. Le fichier n'est jamais supprimé :
+    # il vit dans l'image Docker, un rm serait perdu au redéploiement.
+    is_rejected: Mapped[bool] = mapped_column(
+        Boolean, default=False, nullable=False, server_default=false()
+    )
 
     annotations = relationship("Annotation", back_populates="image")
 

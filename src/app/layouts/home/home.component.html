@@ -11,7 +11,7 @@
       <p class="paginate">Page <strong>{{current_batch}} / {{total_batches}}</strong></p>
       <div formArrayName="items" class="grid">
         @for (item of itemsControls; track $index) {
-          <app-card-input [group]="item" [imageId]="imagesBatch[$index].id" [imageUrl]="imagesBatch[$index].path"></app-card-input>
+          <app-card-input [group]="item" [imageId]="imagesBatch[$index].id" [imageUrl]="imagesBatch[$index].path" (remove)="removeImage(imagesBatch[$index].id)"></app-card-input>
         }
       </div>
   }
@@ -43,6 +43,9 @@
   }
     @if (has_error) {
       <span class="err_message">Au moins une annotation a été oubliée</span>
+    }
+    @if (remove_error) {
+      <span class="err_message">La suppression a échoué, réessayez</span>
     }
   <div class="submit_container">
     @if (annoter) {

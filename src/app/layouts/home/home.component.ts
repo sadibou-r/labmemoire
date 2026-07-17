@@ -28,6 +28,9 @@ export class HomeComponent {
   current_batch : any = 1
   total_batches : any = 1
   isSubmitting = false;
+  // Retrait d'images écartées : ids dont la requête est en cours (anti double-clic).
+  removingIds = new Set<number>();
+  remove_error : boolean = false
   // Pagination de l'onglet "Annotations" (correction).
   correctionPageSize = 12;
   correctionPage = 1;
@@ -180,6 +183,33 @@ get itemsControls(): FormGroup[] {
     return this.fb.group({
       grade: [''],
       stade: ['']
+    });
+  }
+
+  // Écarte une image jugée inexploitable (doublon, pas un pied diabétique...).
+  removeImage(imageId: number) {
+    if (this.removingIds.has(imageId)) {
+      return;
+    }
+    this.removingIds.add(imageId);
+    this.imageService.rejectImage(imageId).subscribe({
+      next: () => {
+        // Index recalculé ici : un autre retrait a pu décaler les tableaux entre-temps.
+        const index = this.imagesBatch.findIndex(image => image.id === imageId);
+        if (index !== -1) {
+          // imagesBatch et itemsArray sont appariés par index (onSubmit s'appuie
+          // dessus) : toujours retirer les deux ensemble, sinon les grades saisis
+          // se retrouveraient attribués aux mauvaises images.
+          this.imagesBatch.splice(index, 1);
+          this.itemsArray.removeAt(index);
+        }
+        this.removingIds.delete(imageId);
+        this.remove_error = false;
+      },
+      error: () => {
+        this.removingIds.delete(imageId);
+        this.remove_error = true;
+      }
     });
   }
 
